@@ -1,4 +1,4 @@
-const service = require("./reservations.service")
+const reservationsService = require("./reservations.service")
 const asyncErrorBoundary = require("../errors/asyncErrorBoundary")
 const hasProperties = require("../errors/hasProperties")
 const hasRequiredProperties = hasProperties("first_name", "last_name", "mobile_number", "reservation_date", "reservation_time", "people")
@@ -118,17 +118,36 @@ function isValidTime(req, res, next) {
   }
 }
 
+async function reservationExists(req, res, next) {
+  const reservationId = Number(req.params.reservationId)
+  const foundReservation = await reservationsService.read(reservationId)
+  if (foundReservation) {
+    res.locals.reservation = foundReservation
+    next()
+  } else {
+    next({
+      status: 400,
+      message: `Reservation '${reservationId}' does not exist` 
+    })
+  }
+}
+
 async function list(req, res) {
-  const data = await service.listReservationsForCurrentDate(req.query.date)
+  const data = await reservationsService.listReservationsForCurrentDate(req.query.date)
   res.json({data})
 }
 
 async function create(req, res) {
-  const data = await service.create(req.body.data)
+  const data = await reservationsService.create(req.body.data)
   res.status(201).json({data})
+}
+
+function read(req, res, next) {
+  res.json({data: res.locals.reservation})
 }
 
 module.exports = {
   list: asyncErrorBoundary(list),
-  create: [hasOnlyValidProperties, hasRequiredProperties, isValidDate, dateIsNotInPast, isDateTuesday, isValidTime, isANumber, asyncErrorBoundary(create)]
+  create: [hasOnlyValidProperties, hasRequiredProperties, isValidDate, dateIsNotInPast, isDateTuesday, isValidTime, isANumber, asyncErrorBoundary(create)],
+  read: [asyncErrorBoundary(reservationExists), read]
 };
