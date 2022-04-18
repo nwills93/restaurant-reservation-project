@@ -63,6 +63,7 @@ function Dashboard() {
       <td>{table.table_name}</td>
       <td>{table.capacity}</td>
       <td data-table-id-status={`${table.table_id}`}>{table.occupied ? 'Occupied' : 'Free'}</td>
+      {table.occupied ? <td><button type="button" className="btn btn-secondary" data-table-id-finish={table.table_id}>Finish</button></td> : null}
     </tr>
   ))
 
