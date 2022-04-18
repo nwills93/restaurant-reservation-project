@@ -23,9 +23,18 @@ function update(updatedTable) {
         .then(updatedRow => updatedRow[0])
 }
 
+function deleteTableAssignment(resetTable) {
+    return knex("tables")
+        .select("*")
+        .where({table_id: resetTable.table_id})
+        .update(resetTable)
+        .then(resetTableRow => resetTableRow[0])
+}
+
 module.exports = {
     listTables,
     create,
     read,
-    update
+    update,
+    deleteTableAssignment
 }

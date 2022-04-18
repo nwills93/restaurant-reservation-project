@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, Link, useHistory } from "react-router-dom";
-import { listReservations, listTables } from "../utils/api";
+import { listReservations, listTables, deleteTableAssignment } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import { today, previous, next } from "../utils/date-time";
 
@@ -75,7 +75,9 @@ function Dashboard() {
             className="btn btn-secondary"
             data-table-id-finish={table.table_id}
             onClick={() => {
-              if (window.confirm("Is this table ready to seat new guests? This cannot be undone.")) history.go(0)
+              if (window.confirm("Is this table ready to seat new guests? This cannot be undone.")) {
+                deleteTableAssignment(table.table_id).then(history.go(0))
+              }
             }}
           >
             Finish

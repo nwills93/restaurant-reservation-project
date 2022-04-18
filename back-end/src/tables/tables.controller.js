@@ -83,6 +83,17 @@ function isTableOccupied(req, res, next) {
     } 
 }
 
+function isTableFree(req, res, next) {
+    if(!res.locals.table.occupied) {
+        next({
+            status: 400,
+            message: 'Table must first be occupied in order to clear table.'
+        })
+    } else {
+        next()
+    }
+}
+
 async function updateTable(req, res, next) {
     const updatedTable = {
         ...req.body.data,
@@ -93,8 +104,19 @@ async function updateTable(req, res, next) {
     res.json({data})
 }
 
+async function deleteTableAssignment(req, res, next) {
+    const resetTableAssignment = {
+        table_id: res.locals.table.table_id,
+        occupied: false,
+        reservation_id: null,
+    }
+    const data = await tablesService.deleteTableAssignment(resetTableAssignment)
+    res.json({data})
+}
+
 module.exports = {
     listTables: asyncErrorBoundary(listTables),
     create: [hasRequiredCreateProperties, tableNameIsMoreThanOneCharacter, capacityIsANumber, asyncErrorBoundary(create)],
-    update: [asyncErrorBoundary(tableExists), hasRequiredUpdateProperties, asyncErrorBoundary(partyIsSmallerThanCapacity), isTableOccupied, asyncErrorBoundary(updateTable)]
+    update: [asyncErrorBoundary(tableExists), hasRequiredUpdateProperties, asyncErrorBoundary(partyIsSmallerThanCapacity), isTableOccupied, asyncErrorBoundary(updateTable)],
+    delete: [asyncErrorBoundary(tableExists), isTableFree, asyncErrorBoundary(deleteTableAssignment)]
 }
