@@ -47,7 +47,7 @@ async function tableExists(req, res, next) {
         next()
     } else {
         next({
-            status: 400,
+            status: 404,
             message: `Table '${tableId}' does not exist`
         })
     }
@@ -87,7 +87,7 @@ function isTableFree(req, res, next) {
     if(!res.locals.table.occupied) {
         next({
             status: 400,
-            message: 'Table must first be occupied in order to clear table.'
+            message: 'Table is not occupied.'
         })
     } else {
         next()
