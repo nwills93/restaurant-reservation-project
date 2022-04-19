@@ -83,6 +83,7 @@ export async function createReservation(reservation, signal) {
 export async function listTables(signal) {
   const url = `${API_BASE_URL}/tables`
   const options = {
+    method: 'GET',
     headers,
     signal,
   }
@@ -118,4 +119,15 @@ export async function updateTableStatus(tableId, reservationId, signal) {
     signal,
   }
   return await fetchJson(url, options, {})
+}
+
+export async function deleteTableAssignment(tableId, signal) {
+  const url = `${API_BASE_URL}/tables/${tableId}/seat`
+  const options = {
+    method: 'DELETE',
+    headers,
+    signal,
+  }
+
+  return await fetchJson(url, options)
 }

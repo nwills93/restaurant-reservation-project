@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, Link } from "react-router-dom";
-import { listReservations, listTables } from "../utils/api";
+import { useLocation, Link, useHistory } from "react-router-dom";
+import { listReservations, listTables, deleteTableAssignment } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
-import {today, previous, next} from "../utils/date-time"
+import { today, previous, next } from "../utils/date-time";
 
 /**
  * Defines the dashboard page.
@@ -11,11 +11,12 @@ import {today, previous, next} from "../utils/date-time"
  * @returns {JSX.Element}
  */
 function Dashboard() {
-  const [date, setDate] = useState(today())
+  const [date, setDate] = useState(today());
   const [reservations, setReservations] = useState([]);
-  const [tables, setTables] = useState([])
+  const [tables, setTables] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
   const location = useLocation();
+  const history = useHistory();
 
   useEffect(loadDashboard, [date]);
 
@@ -24,26 +25,19 @@ function Dashboard() {
     const singleValue = queryParams.get("date");
     if (singleValue) {
       setDate(singleValue);
-    }   
-  }, []);
+    }
+  }, [location.search]);
 
-  useEffect(() => {
-    const ac = new AbortController()
-    listTables(ac.signal)
-    .then(setTables)
-    .catch(setReservationsError)
-
-    return () => ac.abort()
-  }, [])
 
   function loadDashboard() {
     const abortController = new AbortController();
     setReservationsError(null);
-    listReservations({ date },
-      abortController.signal
-    )
+    listReservations({ date }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
+    listTables(abortController.signal)
+      .then(setTables)
+      .catch(setReservationsError)
     return () => abortController.abort();
   }
 
@@ -53,7 +47,13 @@ function Dashboard() {
       <td>{reservation.mobile_number}</td>
       <td>{reservation.reservation_time}</td>
       <td>{reservation.people}</td>
-      <td><Link to={`/reservations/${reservation.reservation_id}/seat`}><button type="button" className="btn btn-secondary">Seat</button></Link></td>
+      <td>
+        <Link to={`/reservations/${reservation.reservation_id}/seat`}>
+          <button type="button" className="btn btn-secondary">
+            Seat
+          </button>
+        </Link>
+      </td>
     </tr>
   ));
 
@@ -62,9 +62,27 @@ function Dashboard() {
       <td>{table.table_id}</td>
       <td>{table.table_name}</td>
       <td>{table.capacity}</td>
-      <td data-table-id-status={`${table.table_id}`}>{table.occupied ? 'Occupied' : 'Free'}</td>
+      <td data-table-id-status={`${table.table_id}`}>
+        {table.reservation_id === null ? "Free" : "Occupied"}
+      </td>
+      {table.reservation_id ? (
+        <td>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            data-table-id-finish={table.table_id}
+            onClick={() => {
+              if (window.confirm("Is this table ready to seat new guests? This cannot be undone.")) {
+                deleteTableAssignment(table.table_id).then(history.go(0))        
+              }
+            }}
+          >
+            Finish
+          </button>
+        </td>
+      ) : null}
     </tr>
-  ))
+  ));
 
   return (
     <main>
@@ -73,21 +91,33 @@ function Dashboard() {
         <h4 className="mb-0">Reservations for {date}</h4>
       </div>
       <ErrorAlert error={reservationsError} />
-      <div class="btn-group" role="group">
+      <div className="btn-group" role="group">
         <Link to={`/dashboard?date=${previous(date)}`}>
-        <button type="button" class="btn btn-primary" onClick={() => setDate(previous(date))}>
-          Previous
-        </button>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => setDate(previous(date))}
+          >
+            Previous
+          </button>
         </Link>
         <Link to={`/dashboard?date=${today()}`}>
-        <button type="button" class="btn btn-primary" onClick={() => setDate(today())}>
-          Today
-        </button>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => setDate(today())}
+          >
+            Today
+          </button>
         </Link>
         <Link to={`/dashboard?date=${next(date)}`}>
-        <button type="button" class="btn btn-primary" onClick={() => setDate(next(date))}>
-          Next
-        </button>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => setDate(next(date))}
+          >
+            Next
+          </button>
         </Link>
       </div>
       <div className="d-flex justify-content-between">

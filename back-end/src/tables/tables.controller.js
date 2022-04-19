@@ -47,7 +47,7 @@ async function tableExists(req, res, next) {
         next()
     } else {
         next({
-            status: 400,
+            status: 404,
             message: `Table '${tableId}' does not exist`
         })
     }
@@ -83,6 +83,17 @@ function isTableOccupied(req, res, next) {
     } 
 }
 
+function isTableFree(req, res, next) {
+    if(!res.locals.table.reservation_id) {
+        next({
+            status: 400,
+            message: 'Table is not occupied.'
+        })
+    } else {
+        next()
+    }
+}
+
 async function updateTable(req, res, next) {
     const updatedTable = {
         ...req.body.data,
@@ -93,8 +104,25 @@ async function updateTable(req, res, next) {
     res.json({data})
 }
 
+async function deleteTableAssignment(req, res, next) {
+    const resetTableAssignment = {
+        table_id: res.locals.table.table_id,
+        occupied: false,
+        reservation_id: null,
+    }
+    const data = await tablesService.deleteTableAssignment(resetTableAssignment)
+    res.json({data})
+}
+
+// async function deleteTableAssignment(req, res, next) {
+//   const tableId = res.locals.table.table_id
+//   const data = await tablesService.deleteTableAssignment(tableId)
+//   res.json({data, message: 'Seat Freed'})
+// }
+
 module.exports = {
     listTables: asyncErrorBoundary(listTables),
     create: [hasRequiredCreateProperties, tableNameIsMoreThanOneCharacter, capacityIsANumber, asyncErrorBoundary(create)],
-    update: [asyncErrorBoundary(tableExists), hasRequiredUpdateProperties, asyncErrorBoundary(partyIsSmallerThanCapacity), isTableOccupied, asyncErrorBoundary(updateTable)]
+    update: [asyncErrorBoundary(tableExists), hasRequiredUpdateProperties, asyncErrorBoundary(partyIsSmallerThanCapacity), isTableOccupied, asyncErrorBoundary(updateTable)],
+    delete: [asyncErrorBoundary(tableExists), isTableFree, asyncErrorBoundary(deleteTableAssignment)]
 }

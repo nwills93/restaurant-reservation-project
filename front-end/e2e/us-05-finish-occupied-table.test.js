@@ -61,13 +61,13 @@ describe("US-05 - Finish an occupied table - E2E", () => {
         path: ".screenshots/us-05-dashboard-finish-button-before.png",
         fullPage: true,
       });
-
+      console.log('Checking out the table', table)
       const containsOccupied = await containsText(
         page,
         `[data-table-id-status="${table.table_id}"]`,
         "occupied"
       );
-
+        console.log('checking containsOccuiped', containsOccupied)
       expect(containsOccupied).toBe(true);
 
       const finishButtonSelector = `[data-table-id-finish="${table.table_id}"]`;
@@ -90,13 +90,13 @@ describe("US-05 - Finish an occupied table - E2E", () => {
         path: ".screenshots/us-05-dashboard-finish-button-after.png",
         fullPage: true,
       });
-
+      console.log('checking the table AGAIN', table)
       const containsFree = await containsText(
         page,
         `[data-table-id-status="${table.table_id}"]`,
         "free"
       );
-
+        console.log('checking containsFREE', containsFree)
       expect(containsFree).toBe(true);
     });
 
