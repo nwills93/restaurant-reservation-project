@@ -84,7 +84,7 @@ function isTableOccupied(req, res, next) {
 }
 
 function isTableFree(req, res, next) {
-    if(!res.locals.table.occupied) {
+    if(!res.locals.table.reservation_id) {
         next({
             status: 400,
             message: 'Table is not occupied.'
@@ -113,6 +113,12 @@ async function deleteTableAssignment(req, res, next) {
     const data = await tablesService.deleteTableAssignment(resetTableAssignment)
     res.json({data})
 }
+
+// async function deleteTableAssignment(req, res, next) {
+//   const tableId = res.locals.table.table_id
+//   const data = await tablesService.deleteTableAssignment(tableId)
+//   res.json({data, message: 'Seat Freed'})
+// }
 
 module.exports = {
     listTables: asyncErrorBoundary(listTables),

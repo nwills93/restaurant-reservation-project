@@ -26,14 +26,8 @@ function Dashboard() {
     if (singleValue) {
       setDate(singleValue);
     }
-  }, []);
+  }, [location.search]);
 
-  useEffect(() => {
-    const ac = new AbortController();
-    listTables(ac.signal).then(setTables).catch(setReservationsError);
-
-    return () => ac.abort();
-  }, []);
 
   function loadDashboard() {
     const abortController = new AbortController();
@@ -41,6 +35,9 @@ function Dashboard() {
     listReservations({ date }, abortController.signal)
       .then(setReservations)
       .catch(setReservationsError);
+    listTables(abortController.signal)
+      .then(setTables)
+      .catch(setReservationsError)
     return () => abortController.abort();
   }
 
@@ -66,9 +63,9 @@ function Dashboard() {
       <td>{table.table_name}</td>
       <td>{table.capacity}</td>
       <td data-table-id-status={`${table.table_id}`}>
-        {table.occupied ? "Occupied" : "Free"}
+        {table.reservation_id === null ? "Free" : "Occupied"}
       </td>
-      {table.occupied ? (
+      {table.reservation_id ? (
         <td>
           <button
             type="button"
@@ -76,7 +73,7 @@ function Dashboard() {
             data-table-id-finish={table.table_id}
             onClick={() => {
               if (window.confirm("Is this table ready to seat new guests? This cannot be undone.")) {
-                deleteTableAssignment(table.table_id).then(history.go(0))
+                deleteTableAssignment(table.table_id).then(history.go(0))        
               }
             }}
           >
@@ -94,11 +91,11 @@ function Dashboard() {
         <h4 className="mb-0">Reservations for {date}</h4>
       </div>
       <ErrorAlert error={reservationsError} />
-      <div class="btn-group" role="group">
+      <div className="btn-group" role="group">
         <Link to={`/dashboard?date=${previous(date)}`}>
           <button
             type="button"
-            class="btn btn-primary"
+            className="btn btn-primary"
             onClick={() => setDate(previous(date))}
           >
             Previous
@@ -107,7 +104,7 @@ function Dashboard() {
         <Link to={`/dashboard?date=${today()}`}>
           <button
             type="button"
-            class="btn btn-primary"
+            className="btn btn-primary"
             onClick={() => setDate(today())}
           >
             Today
@@ -116,7 +113,7 @@ function Dashboard() {
         <Link to={`/dashboard?date=${next(date)}`}>
           <button
             type="button"
-            class="btn btn-primary"
+            className="btn btn-primary"
             onClick={() => setDate(next(date))}
           >
             Next

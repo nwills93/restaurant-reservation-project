@@ -31,6 +31,13 @@ function deleteTableAssignment(resetTable) {
         .then(resetTableRow => resetTableRow[0])
 }
 
+// function deleteTableAssignment(table_id) {
+//     return knex("tables")
+//         .select("*")
+//         .where({table_id})
+//         .update({reservation_id: 0, occupied: false})
+// }
+
 module.exports = {
     listTables,
     create,
