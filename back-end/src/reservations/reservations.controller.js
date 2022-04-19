@@ -9,7 +9,8 @@ const VALID_PROPERTIES = [
   "mobile_number",
   "reservation_date",
   "reservation_time",
-  "people"
+  "people",
+  "status"
 ]
 
  function hasOnlyValidProperties(req, res, next) {
@@ -119,15 +120,52 @@ function isValidTime(req, res, next) {
 }
 
 async function reservationExists(req, res, next) {
-  const reservationId = Number(req.params.reservationId)
+  const reservationId = Number(req.params.reservation_id)
   const foundReservation = await reservationsService.read(reservationId)
   if (foundReservation) {
     res.locals.reservation = foundReservation
     next()
   } else {
     next({
+      status: 404,
+      message: `Reservation '${req.params.reservation_id}' does not exist` 
+    })
+  }
+}
+
+function checkStatus(req, res, next) {
+  const {status} = req.body.data
+  if(status !== 'booked') {
+    next({
       status: 400,
-      message: `Reservation '${reservationId}' does not exist` 
+      message: `Status '${status}' is invalid`
+    })
+  } else {
+    next()
+  }
+}
+
+function checkIfStatusIsFinished(req, res, next) {
+  if(res.locals.reservation.status === 'finished') {
+    next({
+      status: 400,
+      message: 'Cannot update status of a reservation that is finished.'
+    })
+  } else {
+    next()
+  }
+}
+
+function checkIfStatusIsValidEntry(req, res, next) {
+  const {status} = req.body.data
+  console.log(status)
+  const validStatus = ['booked', 'seated', 'finished']
+  if (validStatus.includes(status)) {
+    next()
+  } else {
+    next({
+      status: 400,
+      message: `Status '${status}' is invalid. Status must be either 'booked', 'seated', or 'finished'.`
     })
   }
 }
@@ -146,8 +184,18 @@ function read(req, res, next) {
   res.json({data: res.locals.reservation})
 }
 
+async function updateReservationStatus(req, res, next) {
+  const updatedReservation = {
+    ...req.body.data,
+    reservation_id: res.locals.reservation.reservation_id
+  }
+  const data = await reservationsService.updateReservationStatus(updatedReservation)
+  res.json({data})
+}
+
 module.exports = {
   list: asyncErrorBoundary(list),
-  create: [hasOnlyValidProperties, hasRequiredProperties, isValidDate, dateIsNotInPast, isDateTuesday, isValidTime, isANumber, asyncErrorBoundary(create)],
-  read: [asyncErrorBoundary(reservationExists), read]
+  create: [hasOnlyValidProperties, hasRequiredProperties, isValidDate, dateIsNotInPast, isDateTuesday, isValidTime, isANumber, checkStatus ,asyncErrorBoundary(create)],
+  read: [asyncErrorBoundary(reservationExists), read],
+  update: [asyncErrorBoundary(reservationExists), checkIfStatusIsFinished, checkIfStatusIsValidEntry, asyncErrorBoundary(updateReservationStatus)]
 };
