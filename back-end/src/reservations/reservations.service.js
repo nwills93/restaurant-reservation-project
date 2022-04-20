@@ -6,6 +6,15 @@ function listReservationsForCurrentDate(reservation_date) {
     return response
 }
 
+function search(mobile_number) {
+    return knex("reservations")
+      .whereRaw(
+        "translate(mobile_number, '() -', '') like ?",
+        `%${mobile_number.replace(/\D/g, "")}%`
+      )
+      .orderBy("reservation_date");
+  }
+
 function create(reservation) {
     return knex("reservations")
         .insert(reservation)
@@ -29,5 +38,6 @@ module.exports = {
     listReservationsForCurrentDate,
     create,
     read,
-    updateReservationStatus
+    updateReservationStatus,
+    search
 }
