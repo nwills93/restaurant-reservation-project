@@ -6,6 +6,7 @@ import NotFound from "./NotFound";
 import CreateReservation from "./CreateReservation"
 import CreateTable from "./CreateTable"
 import SeatReservation from "./SeatReservation"
+import SearchByPhone from "./SearchByPhone"
 
 /**
  * Defines all the routes for the application.
@@ -34,6 +35,9 @@ function Routes() {
       </Route>
       <Route exact path="/tables/new">
         <CreateTable />
+      </Route>
+      <Route exact path="/search">
+        <SearchByPhone />
       </Route>
       <Route>
         <NotFound />
