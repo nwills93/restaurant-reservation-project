@@ -173,8 +173,13 @@ function checkIfStatusIsValidEntry(req, res, next) {
 }
 
 async function list(req, res) {
-  const data = await reservationsService.listReservationsForCurrentDate(req.query.date)
-  res.json({data})
+  if (req.query.date) {
+    const data = await reservationsService.listReservationsForCurrentDate(req.query.date)
+    res.json({data})
+  } else {
+    const searchData = await reservationsService.search(req.query.mobile_number)
+    res.json({data: searchData})
+  }
 }
 
 async function create(req, res) {
