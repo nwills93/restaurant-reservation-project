@@ -134,7 +134,10 @@ async function reservationExists(req, res, next) {
 }
 
 function checkStatus(req, res, next) {
-  const {status} = req.body.data
+  let {status} = req.body.data
+  if(!status) {
+    status = 'booked'
+  }
   if(status !== 'booked') {
     next({
       status: 400,
@@ -158,7 +161,6 @@ function checkIfStatusIsFinished(req, res, next) {
 
 function checkIfStatusIsValidEntry(req, res, next) {
   const {status} = req.body.data
-  console.log(status)
   const validStatus = ['booked', 'seated', 'finished']
   if (validStatus.includes(status)) {
     next()

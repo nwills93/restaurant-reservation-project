@@ -272,7 +272,7 @@ describe("US-06 - Reservation status", () => {
 
       const reservationsResponse = await request(app)
         .get(
-          `/reservations?date=${asDateString(reservationOne.reservation_date)}`
+          `/reservations?date=${reservationOne.reservation_date}`
         )
         .set("Accept", "application/json");
 
@@ -286,8 +286,9 @@ describe("US-06 - Reservation status", () => {
     });
   });
 });
-
+//Date already is in XXXX-XX-XX format prior to this function call.
 function asDateString(date) {
+  console.log('Date', date)
   return `${date.getFullYear().toString(10)}-${(date.getMonth() + 1)
     .toString(10)
     .padStart(2, "0")}-${date.getDate().toString(10).padStart(2, "0")}`;

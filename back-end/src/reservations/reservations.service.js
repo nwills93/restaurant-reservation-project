@@ -1,7 +1,9 @@
 const knex = require("../db/connection")
 
 function listReservationsForCurrentDate(reservation_date) {
-    return knex("reservations").select("*").where({reservation_date}).orderBy("reservation_time")
+    const response =  knex("reservations").select("*").where({reservation_date}).andWhereNot({status: 'finished'}).orderBy("reservation_time")
+    // console.log(response)
+    return response
 }
 
 function create(reservation) {
