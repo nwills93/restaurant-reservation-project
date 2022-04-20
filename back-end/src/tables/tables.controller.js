@@ -40,7 +40,7 @@ function capacityIsANumber(req, res, next) {
 }
 
 async function tableExists(req, res, next) {
-    const tableId = Number(req.params.tableId)
+    const tableId = Number(req.params.table_id)
     const foundTable = await tablesService.read(tableId)
     if(foundTable) {
         res.locals.table = foundTable
@@ -53,16 +53,22 @@ async function tableExists(req, res, next) {
     }
 }
 
-async function partyIsSmallerThanCapacity(req, res, next) {
+async function validatingReservation(req, res, next) {
     const {reservation_id} = req.body.data
-    const reservationPartySize = await reservationsService.read(reservation_id)
-    if(!reservationPartySize) {
+    const reservation = await reservationsService.read(reservation_id)
+    if(!reservation) {
         next({
             status: 404,
             message: `Reservation id '${reservation_id}' does not exist`
         })
     }
-    if(Number(res.locals.table.capacity) < Number(reservationPartySize.people)) {
+    if(reservation.status === 'seated') {
+        next({
+            status: 400,
+            message: 'Table has already been seated.'
+        })
+    }
+    if(Number(res.locals.table.capacity) < Number(reservation.people)) {
         next({
             status: 400,
             message: "Party size cannot be greater than table capacity. Please select another table."
@@ -104,25 +110,27 @@ async function updateTable(req, res, next) {
     res.json({data})
 }
 
+// async function deleteTableAssignment(req, res, next) {
+//     const resetTableAssignment = {
+//         table_id: res.locals.table.table_id,
+//         occupied: false,
+//         reservation_id: null,
+//     }
+//     const data = await tablesService.deleteTableAssignment(resetTableAssignment)
+//     res.json({data})
+// }
+
 async function deleteTableAssignment(req, res, next) {
-    const resetTableAssignment = {
-        table_id: res.locals.table.table_id,
-        occupied: false,
-        reservation_id: null,
-    }
-    const data = await tablesService.deleteTableAssignment(resetTableAssignment)
+    const table = res.locals.table
+    const data = await tablesService.deleteTableAssignment(table)
     res.json({data})
 }
 
-// async function deleteTableAssignment(req, res, next) {
-//   const tableId = res.locals.table.table_id
-//   const data = await tablesService.deleteTableAssignment(tableId)
-//   res.json({data, message: 'Seat Freed'})
-// }
+
 
 module.exports = {
     listTables: asyncErrorBoundary(listTables),
     create: [hasRequiredCreateProperties, tableNameIsMoreThanOneCharacter, capacityIsANumber, asyncErrorBoundary(create)],
-    update: [asyncErrorBoundary(tableExists), hasRequiredUpdateProperties, asyncErrorBoundary(partyIsSmallerThanCapacity), isTableOccupied, asyncErrorBoundary(updateTable)],
+    update: [asyncErrorBoundary(tableExists), hasRequiredUpdateProperties, asyncErrorBoundary(validatingReservation), isTableOccupied, asyncErrorBoundary(updateTable)],
     delete: [asyncErrorBoundary(tableExists), isTableFree, asyncErrorBoundary(deleteTableAssignment)]
 }

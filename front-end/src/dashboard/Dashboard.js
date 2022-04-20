@@ -47,13 +47,16 @@ function Dashboard() {
       <td>{reservation.mobile_number}</td>
       <td>{reservation.reservation_time}</td>
       <td>{reservation.people}</td>
-      <td>
-        <Link to={`/reservations/${reservation.reservation_id}/seat`}>
-          <button type="button" className="btn btn-secondary">
-            Seat
-          </button>
-        </Link>
-      </td>
+      <td data-reservation-id-status={reservation.reservation_id}>{reservation.status}</td>
+      {reservation.status === 'booked' && (
+        <td>
+          <Link to={`/reservations/${reservation.reservation_id}/seat`}>
+            <button type="button" className="btn btn-secondary">
+              Seat
+            </button>
+          </Link>
+        </td>
+      )}
     </tr>
   ));
 
@@ -128,6 +131,7 @@ function Dashboard() {
               <th>Mobile Number</th>
               <th>Reservation Time</th>
               <th>Number of People in Party</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>{reservationRows}</tbody>
