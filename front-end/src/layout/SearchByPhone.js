@@ -1,5 +1,4 @@
 import React, {useState} from 'react'
-import {Link} from 'react-router-dom'
 import {searchReservations, cancelReservation} from '../utils/api'
 import ErrorAlert from "./ErrorAlert"
 import ReservationTableDisplay from "./ReservationTableDisplay"

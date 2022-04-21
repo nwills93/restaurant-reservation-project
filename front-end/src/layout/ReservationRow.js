@@ -4,12 +4,6 @@ import {cancelReservation} from "../utils/api"
 
 export default function ReservationRow({ reservation, handleCancel }) {
     const history = useHistory()
-
-    // const handleCancel = (id) => {
-    //     if (window.confirm("Do you want to cancel this reservation? This cannot be undone.")) {
-    //       cancelReservation(id).then(history.go(0))
-    //     }
-    //   }
   
     return (
         <tr key={reservation.reservation_id}>
