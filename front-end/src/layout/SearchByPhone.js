@@ -1,7 +1,8 @@
 import React, {useState} from 'react'
-import {Link} from 'react-router-dom'
 import {searchReservations, cancelReservation} from '../utils/api'
 import ErrorAlert from "./ErrorAlert"
+import ReservationTableDisplay from "./ReservationTableDisplay"
+import SearchForm from "./SearchForm"
 
 export default function SearchByPhone() {
     const initialFormState = {
@@ -13,12 +14,6 @@ export default function SearchByPhone() {
     const [error, setError] = useState(null)
     const [notFound, setNotFound] = useState("")
 
-    const handleChange = ({target}) => {
-        setFormData({
-            ...initialFormState,
-            [target.name]: target.value
-        })
-    }
 
     const handleSearchSubmission = (event) => {
         event.preventDefault()
@@ -60,71 +55,13 @@ export default function SearchByPhone() {
         <div>
             <h1>Search for Reservation by Phone Number</h1>
             <ErrorAlert error={error}/>
-            <form onSubmit={handleSearchSubmission}>
-                <label htmlFor="mobile_number" className="form-label">
-                    Search Phone Number:
-                </label>
-                <input 
-                    id="mobile_number"
-                    type="search"
-                    name="mobile_number"
-                    placeholder="Enter a customer's phone number"
-                    onChange={handleChange}
-                    value={formData.mobile_number}
-                    className="form-control"
-                />
-                <button type="submit" className="btn btn-primary">Find</button>
-            </form>
+            <SearchForm 
+                onSubmit={handleSearchSubmission}
+                formData={formData}
+                setFormData={setFormData}
+            />
             {reservations.length >= 1 ? (
-            <div className="d-flex justify-content-between">
-                <table className="table table-bordered border-dark table-hover mr-2">
-                <thead>
-                    <tr>
-                    <th>Name</th>
-                    <th>Mobile Number</th>
-                    <th>Reservation Time</th>
-                    <th>Number of People in Party</th>
-                    <th>Status</th>
-                    </tr>
-                </thead>
-                    <tbody>
-                    {reservations.map((reservation) => (
-                        <tr key={reservation.reservation_id}>
-                          <td>{`${reservation.last_name}, ${reservation.first_name}`}</td>
-                          <td>{reservation.mobile_number}</td>
-                          <td>{reservation.reservation_time}</td>
-                          <td>{reservation.people}</td>
-                          <td data-reservation-id-status={reservation.reservation_id}>{reservation.status}</td>
-                          {reservation.status === 'booked' && (
-                            <td>
-                              <Link to={`/reservations/${reservation.reservation_id}/seat`}>
-                                <button type="button" className="btn btn-secondary">
-                                  Seat
-                                </button>
-                              </Link>
-                            </td>
-                          )}
-                          <td>
-                              <Link to={`/reservations/${reservation.reservation_id}/edit`}>
-                                <button type="button" className="btn btn-secondary">
-                                    Edit
-                                </button>
-                              </Link>
-                          </td>
-                          <td>
-                              <button 
-                                type="button" 
-                                className="btn btn-secondary" 
-                                data-reservation-id-cancel={reservation.reservation_id}
-                                onClick={() => handleCancel(reservation.reservation_id)}>
-                                    Cancel
-                              </button>
-                          </td>
-                        </tr>
-                      ))}
-                      </tbody>         
-                </table>
-            </div>
+                <ReservationTableDisplay reservations={reservations} handleCancel={handleCancel}/>           
             ) : (
                 <p>{notFound}</p>
             )}
