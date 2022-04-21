@@ -46,7 +46,7 @@ export default function EditReservation() {
         setDateErrors(null)
         const ac = new AbortController()
         updateReservation(formData, reservation_id, ac.signal)
-            .then(history.push(`/dashboard?date=${formData.reservation_date}`))
+            .then(() => history.push(`/dashboard?date=${formData.reservation_date}`))
             .catch(setError)
         return () => ac.abort()
     }
@@ -61,6 +61,7 @@ export default function EditReservation() {
                 onCancel={() => history.goBack()}
                 formData={formData}
                 setFormData={setFormData}
+                submitLabel="Submit"
             />
         </div>
     )

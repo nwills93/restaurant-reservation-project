@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function FormPage({onSubmit, onCancel, formData, setFormData}) {
+export default function FormPage({onSubmit, onCancel, formData, setFormData, submitLabel}) {
     const handleChange = ({target}) => {
         setFormData({
             ...formData,
@@ -86,7 +86,7 @@ export default function FormPage({onSubmit, onCancel, formData, setFormData}) {
                 />
             </div>
             <div className="mt-2">
-                <button type="submit" className="btn btn-primary mr-2">Save</button>
+                <button type="submit" className="btn btn-primary mr-2">{submitLabel}</button>
                 <button type="button" className="btn btn-secondary" onClick={onCancel}>Cancel</button>
             </div>
         </form>
