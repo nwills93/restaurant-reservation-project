@@ -88,6 +88,18 @@ export default function SearchByPhone() {
                               </Link>
                             </td>
                           )}
+                          <td>
+                              <Link to={`/reservations/${reservation.reservation_id}/edit`}>
+                                <button type="button" className="btn btn-secondary">
+                                    Edit
+                                </button>
+                              </Link>
+                          </td>
+                          <td>
+                              <button type="button" className="btn btn-secondary" data-reservation-id-cancel={reservation.reservation_id}>
+                                    Cancel
+                              </button>
+                          </td>
                         </tr>
                       ))}
                       </tbody>         
