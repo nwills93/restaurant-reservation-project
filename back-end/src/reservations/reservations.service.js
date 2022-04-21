@@ -25,7 +25,7 @@ function read(reservation_id) {
     return knex("reservations").select("*").where({reservation_id}).first()
 }
 
-function updateReservationStatus(updatedReservation) {
+function update(updatedReservation) {
     return knex("reservations")
         .select("*")
         .where({reservation_id: updatedReservation.reservation_id})
@@ -33,10 +33,19 @@ function updateReservationStatus(updatedReservation) {
         .then(updatedRow => updatedRow[0])
 }
 
+function updateReservationStatus(updatedReservationStatus) {
+    return knex("reservations")
+        .select("*")
+        .where({reservation_id: updatedReservationStatus.reservation_id})
+        .update(updatedReservationStatus, "*")
+        .then(updatedRow => updatedRow[0])
+}
+
 module.exports = {
     listReservationsForCurrentDate,
     create,
     read,
+    update,
     updateReservationStatus,
     search
 }
