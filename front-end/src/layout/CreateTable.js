@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import {createTable} from '../utils/api'
 import ErrorAlert from "./ErrorAlert"
+import TableFormPage from "./TableFormPage"
 
 export default function CreateTable() {
 
@@ -15,12 +16,12 @@ export default function CreateTable() {
     const [formData, setFormData] = useState({...initialFormState})
     const [tableError, setTableError] = useState(null)
 
-    const handleChange = ({target}) => {
-        setFormData({
-            ...formData,
-            [target.name]: target.value
-        })
-    }
+    // const handleChange = ({target}) => {
+    //     setFormData({
+    //         ...formData,
+    //         [target.name]: target.value
+    //     })
+    // }
 
     const handleCreateTableSubmission = (event) => {
         event.preventDefault()
@@ -31,7 +32,13 @@ export default function CreateTable() {
         <div>
             <h1>Create Table</h1>
             <ErrorAlert error={tableError} />
-            <form onSubmit={handleCreateTableSubmission}>
+            <TableFormPage 
+                onSubmit={handleCreateTableSubmission}
+                onCancel={() => history.goBack()}
+                formData={formData}
+                setFormData={setFormData}
+            />
+            {/* <form onSubmit={handleCreateTableSubmission}>
                 <label htmlFor="table_name" className="form-label">
                     Table Name
                 </label>
@@ -60,7 +67,7 @@ export default function CreateTable() {
                 />
                 <button type="submit" className="btn btn-primary">Save</button>
                 <button type="button" className="btn btn-secondary" onClick={() => history.goBack()}>Cancel</button>
-            </form>
+            </form> */}
         </div>
     )
 }
