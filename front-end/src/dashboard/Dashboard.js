@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, Link, useHistory } from "react-router-dom";
-import { listReservations, listTables, deleteTableAssignment } from "../utils/api";
+import { listReservations, listTables, deleteTableAssignment, cancelReservation } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import { today, previous, next } from "../utils/date-time";
 
@@ -41,6 +41,12 @@ function Dashboard() {
     return () => abortController.abort();
   }
 
+  const handleCancel = (id) => {
+    if (window.confirm("Do you want to cancel this reservation? This cannot be undone.")) {
+      cancelReservation(id).then(history.go(0))
+    }
+  }
+
   const reservationRows = reservations.map((reservation) => (
     <tr key={reservation.reservation_id}>
       <td>{`${reservation.last_name}, ${reservation.first_name}`}</td>
@@ -57,6 +63,22 @@ function Dashboard() {
           </Link>
         </td>
       )}
+      <td>
+        <Link to={`/reservations/${reservation.reservation_id}/edit`}>
+          <button type="button" className="btn btn-secondary">
+              Edit
+          </button>
+        </Link>
+      </td>
+      <td>
+        <button 
+          type="button" 
+          className="btn btn-secondary" 
+          data-reservation-id-cancel={reservation.reservation_id}
+          onClick={() => handleCancel(reservation.reservation_id)}>
+              Cancel
+        </button>
+      </td>
     </tr>
   ));
 

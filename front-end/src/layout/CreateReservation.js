@@ -45,6 +45,7 @@ export default function CreateReservation() {
                 onCancel={() => history.goBack()}
                 formData={formData}
                 setFormData={setFormData}
+                submitLabel="Save"
             />
         </div>
     )

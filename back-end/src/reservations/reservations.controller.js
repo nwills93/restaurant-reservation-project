@@ -10,7 +10,10 @@ const VALID_PROPERTIES = [
   "reservation_date",
   "reservation_time",
   "people",
-  "status"
+  "status",
+  "reservation_id",
+  "created_at",
+  "updated_at"
 ]
 
  function hasOnlyValidProperties(req, res, next) {
@@ -161,13 +164,13 @@ function checkIfStatusIsFinished(req, res, next) {
 
 function checkIfStatusIsValidEntry(req, res, next) {
   const {status} = req.body.data
-  const validStatus = ['booked', 'seated', 'finished']
+  const validStatus = ['booked', 'seated', 'finished', 'cancelled']
   if (validStatus.includes(status)) {
     next()
   } else {
     next({
       status: 400,
-      message: `Status '${status}' is invalid. Status must be either 'booked', 'seated', or 'finished'.`
+      message: `Status '${status}' is invalid. Status must be either 'booked', 'seated', 'finished', or 'cancelled'.`
     })
   }
 }
@@ -192,11 +195,20 @@ function read(req, res, next) {
 }
 
 async function updateReservationStatus(req, res, next) {
+  const updatedReservationStatus = {
+    ...req.body.data,
+    reservation_id: res.locals.reservation.reservation_id
+  }
+  const data = await reservationsService.updateReservationStatus(updatedReservationStatus)
+  res.json({data})
+}
+
+async function update(req, res, next) {
   const updatedReservation = {
     ...req.body.data,
     reservation_id: res.locals.reservation.reservation_id
   }
-  const data = await reservationsService.updateReservationStatus(updatedReservation)
+  const data = await reservationsService.update(updatedReservation)
   res.json({data})
 }
 
@@ -204,5 +216,17 @@ module.exports = {
   list: asyncErrorBoundary(list),
   create: [hasOnlyValidProperties, hasRequiredProperties, isValidDate, dateIsNotInPast, isDateTuesday, isValidTime, isANumber, checkStatus ,asyncErrorBoundary(create)],
   read: [asyncErrorBoundary(reservationExists), read],
-  update: [asyncErrorBoundary(reservationExists), checkIfStatusIsFinished, checkIfStatusIsValidEntry, asyncErrorBoundary(updateReservationStatus)]
+  updateStatus: [asyncErrorBoundary(reservationExists), checkIfStatusIsFinished, checkIfStatusIsValidEntry, asyncErrorBoundary(updateReservationStatus)],
+  update: [
+    asyncErrorBoundary(reservationExists),
+    hasOnlyValidProperties,
+    hasRequiredProperties,
+    isValidDate,
+    dateIsNotInPast,
+    isDateTuesday,
+    isValidTime,
+    isANumber,
+    checkStatus,
+    asyncErrorBoundary(update)
+  ]
 };
