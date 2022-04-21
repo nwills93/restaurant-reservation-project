@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, Link, useHistory } from "react-router-dom";
-import { listReservations, listTables, deleteTableAssignment } from "../utils/api";
+import { useLocation, Link } from "react-router-dom";
+import { listReservations, listTables } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
 import { today, previous, next } from "../utils/date-time";
 import ReservationTableDisplay from "../layout/ReservationTableDisplay"
 import TablesTableDisplay from "../layout/TablesTableDisplay";
+import DateButtons from "../layout/DateButtons"
 
 /**
  * Defines the dashboard page.
@@ -18,7 +19,6 @@ function Dashboard() {
   const [tables, setTables] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
   const location = useLocation();
-  const history = useHistory();
 
   useEffect(loadDashboard, [date]);
 
@@ -43,33 +43,6 @@ function Dashboard() {
     return () => abortController.abort();
   }
 
-  // const tableRows = tables.map((table) => (
-  //   <tr key={table.table_id}>
-  //     <td>{table.table_id}</td>
-  //     <td>{table.table_name}</td>
-  //     <td>{table.capacity}</td>
-  //     <td data-table-id-status={`${table.table_id}`}>
-  //       {table.reservation_id === null ? "Free" : "Occupied"}
-  //     </td>
-  //     {table.reservation_id ? (
-  //       <td>
-  //         <button
-  //           type="button"
-  //           className="btn btn-secondary"
-  //           data-table-id-finish={table.table_id}
-  //           onClick={() => {
-  //             if (window.confirm("Is this table ready to seat new guests? This cannot be undone.")) {
-  //               deleteTableAssignment(table.table_id).then(history.go(0))        
-  //             }
-  //           }}
-  //         >
-  //           Finish
-  //         </button>
-  //       </td>
-  //     ) : null}
-  //   </tr>
-  // ));
-
   return (
     <main>
       <h1>Dashboard</h1>
@@ -77,7 +50,11 @@ function Dashboard() {
         <h4 className="mb-0">Reservations for {date}</h4>
       </div>
       <ErrorAlert error={reservationsError} />
-      <div className="btn-group" role="group">
+      <DateButtons 
+        date={date}
+        setDate={setDate}
+      />
+      {/* <div className="btn-group" role="group">
         <Link to={`/dashboard?date=${previous(date)}`}>
           <button
             type="button"
@@ -105,7 +82,7 @@ function Dashboard() {
             Next
           </button>
         </Link>
-      </div>
+      </div> */}
       <div className="d-flex justify-content-between">
         {reservations && (
           <ReservationTableDisplay reservations={reservations} />
@@ -113,17 +90,6 @@ function Dashboard() {
         {tables && (
           <TablesTableDisplay tables={tables}/>
         )}        
-        {/* <table className="table table-bordered border-dark table-hover">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Table Name</th>
-              <th>Capacity</th>
-              <th>Occupied?</th>
-            </tr>
-          </thead>
-          <tbody>{tableRows}</tbody>
-        </table> */}
       </div>
     </main>
   );
