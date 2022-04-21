@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import {Link} from 'react-router-dom'
 import {searchReservations, cancelReservation} from '../utils/api'
 import ErrorAlert from "./ErrorAlert"
+import ReservationTableDisplay from "./ReservationTableDisplay"
 
 export default function SearchByPhone() {
     const initialFormState = {
@@ -76,8 +77,8 @@ export default function SearchByPhone() {
                 <button type="submit" className="btn btn-primary">Find</button>
             </form>
             {reservations.length >= 1 ? (
-            <div className="d-flex justify-content-between">
-                <table className="table table-bordered border-dark table-hover mr-2">
+                <ReservationTableDisplay reservations={reservations} handleCancel={handleCancel}/>
+                /* <table className="table table-bordered border-dark table-hover mr-2">
                 <thead>
                     <tr>
                     <th>Name</th>
@@ -123,8 +124,8 @@ export default function SearchByPhone() {
                         </tr>
                       ))}
                       </tbody>         
-                </table>
-            </div>
+                </table> */
+            
             ) : (
                 <p>{notFound}</p>
             )}

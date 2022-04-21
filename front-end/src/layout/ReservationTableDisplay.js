@@ -1,10 +1,10 @@
 import React from 'react'
 import ReservationRow from './ReservationRow'
 
-export default function ReservationTableDisplay({reservations}) {
+export default function ReservationTableDisplay({ reservations, handleCancel }) {
 
     const reservationRows = reservations.map((reservation) => (
-        <ReservationRow reservation={reservation}/>
+        <ReservationRow reservation={reservation} handleCancel={handleCancel}/>
         ));
     
     

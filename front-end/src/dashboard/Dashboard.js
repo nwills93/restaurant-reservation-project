@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, Link } from "react-router-dom";
-import { listReservations, listTables } from "../utils/api";
+import { useLocation, useHistory } from "react-router-dom";
+import { listReservations, listTables, cancelReservation } from "../utils/api";
 import ErrorAlert from "../layout/ErrorAlert";
-import { today, previous, next } from "../utils/date-time";
+import { today } from "../utils/date-time";
 import ReservationTableDisplay from "../layout/ReservationTableDisplay"
 import TablesTableDisplay from "../layout/TablesTableDisplay";
 import DateButtons from "../layout/DateButtons"
@@ -19,6 +19,7 @@ function Dashboard() {
   const [tables, setTables] = useState([]);
   const [reservationsError, setReservationsError] = useState(null);
   const location = useLocation();
+  const history = useHistory();
 
   useEffect(loadDashboard, [date]);
 
@@ -43,6 +44,12 @@ function Dashboard() {
     return () => abortController.abort();
   }
 
+  const handleCancel = (id) => {
+    if (window.confirm("Do you want to cancel this reservation? This cannot be undone.")) {
+      cancelReservation(id).then(() => history.go(0)).catch(setReservationsError)
+    }
+  }
+
   return (
     <main>
       <h1>Dashboard</h1>
@@ -54,38 +61,9 @@ function Dashboard() {
         date={date}
         setDate={setDate}
       />
-      {/* <div className="btn-group" role="group">
-        <Link to={`/dashboard?date=${previous(date)}`}>
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={() => setDate(previous(date))}
-          >
-            Previous
-          </button>
-        </Link>
-        <Link to={`/dashboard?date=${today()}`}>
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={() => setDate(today())}
-          >
-            Today
-          </button>
-        </Link>
-        <Link to={`/dashboard?date=${next(date)}`}>
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={() => setDate(next(date))}
-          >
-            Next
-          </button>
-        </Link>
-      </div> */}
       <div className="d-flex justify-content-between">
         {reservations && (
-          <ReservationTableDisplay reservations={reservations} />
+          <ReservationTableDisplay reservations={reservations} handleCancel={handleCancel}/>
         )}
         {tables && (
           <TablesTableDisplay tables={tables}/>
