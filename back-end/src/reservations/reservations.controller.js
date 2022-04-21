@@ -161,13 +161,13 @@ function checkIfStatusIsFinished(req, res, next) {
 
 function checkIfStatusIsValidEntry(req, res, next) {
   const {status} = req.body.data
-  const validStatus = ['booked', 'seated', 'finished']
+  const validStatus = ['booked', 'seated', 'finished', 'cancelled']
   if (validStatus.includes(status)) {
     next()
   } else {
     next({
       status: 400,
-      message: `Status '${status}' is invalid. Status must be either 'booked', 'seated', or 'finished'.`
+      message: `Status '${status}' is invalid. Status must be either 'booked', 'seated', 'finished', or 'cancelled'.`
     })
   }
 }

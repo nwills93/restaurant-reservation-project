@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {Link} from 'react-router-dom'
-import {searchReservations} from '../utils/api'
+import {searchReservations, cancelReservation} from '../utils/api'
 import ErrorAlert from "./ErrorAlert"
 
 export default function SearchByPhone() {
@@ -38,7 +38,23 @@ export default function SearchByPhone() {
         return () => ac.abort()
     }
 
-    
+    const handleCancel = (id) => {
+        const {mobile_number} = formData
+        if (window.confirm("Do you want to cancel this reservation? This cannot be undone.")) {
+            cancelReservation(id)
+                .then(() => searchReservations({mobile_number}))
+                .then((response) => {
+                    if (response.length >= 1) {
+                        setNotFound("")
+                        setReservations(response)
+                    } else {
+                        setReservations([])
+                        setNotFound('No reservations found')
+                    }
+                })
+                .catch(setError)
+        }
+    }
 
     return (
         <div>
@@ -96,7 +112,11 @@ export default function SearchByPhone() {
                               </Link>
                           </td>
                           <td>
-                              <button type="button" className="btn btn-secondary" data-reservation-id-cancel={reservation.reservation_id}>
+                              <button 
+                                type="button" 
+                                className="btn btn-secondary" 
+                                data-reservation-id-cancel={reservation.reservation_id}
+                                onClick={() => handleCancel(reservation.reservation_id)}>
                                     Cancel
                               </button>
                           </td>
