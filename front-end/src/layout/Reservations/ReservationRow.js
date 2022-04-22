@@ -1,14 +1,13 @@
 import React from "react";
-import {useHistory, Link} from 'react-router-dom'
-import {cancelReservation} from "../utils/api"
+import {Link} from 'react-router-dom'
 
 export default function ReservationRow({ reservation, handleCancel }) {
-    const history = useHistory()
   
     return (
         <tr key={reservation.reservation_id}>
             <td>{`${reservation.last_name}, ${reservation.first_name}`}</td>
             <td>{reservation.mobile_number}</td>
+            <td>{reservation.reservation_date}</td>
             <td>{reservation.reservation_time}</td>
             <td>{reservation.people}</td>
             <td data-reservation-id-status={reservation.reservation_id}>

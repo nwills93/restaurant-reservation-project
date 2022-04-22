@@ -1,6 +1,6 @@
 import React from 'react'
 import {useHistory} from 'react-router-dom'
-import {deleteTableAssignment} from '../utils/api'
+import {deleteTableAssignment} from '../../utils/api'
 
 export default function TableRow({table}) {
     const history = useHistory()

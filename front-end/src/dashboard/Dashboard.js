@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 import { listReservations, listTables, cancelReservation } from "../utils/api";
-import ErrorAlert from "../layout/ErrorAlert";
+import ErrorAlert from "../layout/Errors/ErrorAlert";
 import { today } from "../utils/date-time";
-import ReservationTableDisplay from "../layout/ReservationTableDisplay"
-import TablesTableDisplay from "../layout/TablesTableDisplay";
-import DateButtons from "../layout/DateButtons"
+import ReservationTableDisplay from "../layout/Reservations/ReservationTableDisplay"
+import TablesTableDisplay from "../layout/Tables/TablesTableDisplay";
+import DateButtons from "../layout/Home/DateButtons"
 
 /**
  * Defines the dashboard page.
