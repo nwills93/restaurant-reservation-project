@@ -1,6 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import {today, previous, next} from "../utils/date-time"
+import {today, previous, next} from "../../utils/date-time"
 
 export default function DateButtons({ date, setDate }) {
     return (

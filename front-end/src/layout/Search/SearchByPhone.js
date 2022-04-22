@@ -1,15 +1,12 @@
 import React, {useState} from 'react'
-import {searchReservations, cancelReservation} from '../utils/api'
-import ErrorAlert from "./ErrorAlert"
-import ReservationTableDisplay from "./ReservationTableDisplay"
-import SearchForm from "./SearchForm"
+import {searchReservations, cancelReservation} from '../../utils/api'
+import ErrorAlert from "../Errors/ErrorAlert"
+import ReservationTableDisplay from "../Reservations/ReservationTableDisplay"
+import SearchForm from "../Forms/SearchForm"
 
 export default function SearchByPhone() {
-    const initialFormState = {
-        mobile_number: ""
-    }
 
-    const [formData, setFormData] = useState({...initialFormState})
+    const [formData, setFormData] = useState({mobile_number: ""})
     const [reservations, setReservations] = useState([])
     const [error, setError] = useState(null)
     const [notFound, setNotFound] = useState("")
@@ -29,15 +26,6 @@ export default function SearchByPhone() {
         const ac = new AbortController()
         const {mobile_number} = formData
         searchReservations({mobile_number}, ac.signal)
-            // .then((response) => {
-            //     if (response.length >= 1) {
-            //         setNotFound("")
-            //         setReservations(response)
-            //     } else {
-            //         setReservations([])
-            //         setNotFound('No reservations found')
-            //     }
-            // })
             .then(handleResponse)
             .catch(setError)
         return () => ac.abort()
@@ -48,15 +36,6 @@ export default function SearchByPhone() {
         if (window.confirm("Do you want to cancel this reservation? This cannot be undone.")) {
             cancelReservation(id)
                 .then(() => searchReservations({mobile_number}))
-                // .then((response) => {
-                //     if (response.length >= 1) {
-                //         setNotFound("")
-                //         setReservations(response)
-                //     } else {
-                //         setReservations([])
-                //         setNotFound('No reservations found')
-                //     }
-                // })
                 .then(handleResponse)
                 .catch(setError)
         }

@@ -1,8 +1,8 @@
 import React, {useState} from 'react'
 import {useHistory} from 'react-router-dom'
-import {createTable} from '../utils/api'
-import ErrorAlert from "./ErrorAlert"
-import TableFormPage from "./TableFormPage"
+import {createTable} from '../../utils/api'
+import ErrorAlert from "../Errors/ErrorAlert"
+import TableFormPage from "../Forms/TableFormPage"
 
 export default function CreateTable() {
 

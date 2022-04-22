@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
-import {readReservation, updateReservation} from "../utils/api"
-import {isDateTuesday, isDateInPast} from "../utils/validateDate"
-import ErrorAlert from "./ErrorAlert"
-import InvalidDateErrors from "./InvalidDateErrors"
-import ReservationFormPage from "./ReservationFormPage"
+import {readReservation, updateReservation} from "../../utils/api"
+import {isDateTuesday, isDateInPast} from "../../utils/validateDate"
+import ErrorAlert from "../Errors/ErrorAlert"
+import InvalidDateErrors from "../Errors/InvalidDateErrors"
+import ReservationFormPage from "../Forms/ReservationFormPage"
 
 export default function EditReservation() {
     const {reservation_id} = useParams()

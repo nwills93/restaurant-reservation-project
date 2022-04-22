@@ -1,6 +1,6 @@
 import React from "react";
-import Menu from "./Menu";
-import Routes from "./Routes";
+import Menu from "./Common/Menu";
+import Routes from "./Home/Routes";
 
 import "./Layout.css";
 

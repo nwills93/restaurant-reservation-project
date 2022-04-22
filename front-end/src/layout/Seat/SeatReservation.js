@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
-import {listTables, readReservation, updateTableStatus} from "../utils/api"
-import ErrorAlert from "./ErrorAlert"
-import SeatForm from "./SeatForm"
+import {listTables, readReservation, updateTableStatus} from "../../utils/api"
+import ErrorAlert from "../Errors/ErrorAlert"
+import SeatForm from "../Forms/SeatForm"
 
 export default function SeatReservation() {
 
