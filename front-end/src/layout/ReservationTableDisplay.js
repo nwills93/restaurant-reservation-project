@@ -14,6 +14,7 @@ export default function ReservationTableDisplay({ reservations, handleCancel }) 
             <tr>
               <th>Name</th>
               <th>Mobile Number</th>
+              <th>Date</th>
               <th>Reservation Time</th>
               <th>Number of People in Party</th>
               <th>Status</th>

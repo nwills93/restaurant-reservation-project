@@ -6,10 +6,6 @@ import SeatForm from "./SeatForm"
 
 export default function SeatReservation() {
 
-    // const initialFormState = {
-    //     table_id: null
-    // }
-
     const {reservationId} = useParams()
 
     const history = useHistory()
@@ -17,7 +13,6 @@ export default function SeatReservation() {
     const [reservation, setReservation] = useState({})
     const [error, setError] = useState(null)
     const [tables, setTables] = useState([])
-    // const [formData, setFormData] = useState({...initialFormState})
     const [formData, setFormData] = useState({table_id: null})
 
     useEffect(() => {
@@ -31,16 +26,6 @@ export default function SeatReservation() {
         listTables(ac.signal).then(setTables).catch(setError)
         return () => ac.abort()
     }, [])
-
-    // const tableOptions = tables.map(table => (
-    //     <option value={table.table_id}>{table.table_name} - {table.capacity}</option>
-    // ))
-
-    // const handleChange = ({target}) => {
-    //     setFormData({
-    //         [target.name]: target.value
-    //     })
-    // }
     
     const handleTableSelection = (event) => {
         event.preventDefault()
@@ -62,19 +47,6 @@ export default function SeatReservation() {
                     setFormData={setFormData}
                 />
             )}
-            {/* <form onSubmit={handleTableSelection}>
-                <label htmlFor="table_id" className="form-label">
-                    Seat At:
-                </label>
-                <select id="table_id" name="table_id" className="form-control" onChange={handleChange} required>
-                    <option value>Select a Table</option>
-                    {tableOptions}
-                </select>
-                <div className="mt-2">
-                    <button type="button" className="btn btn-secondary mr-2" onClick={() => history.goBack()}>Cancel</button>
-                    <button type="submit" className="btn btn-primary">Submit</button>
-                </div>
-            </form> */}
         </div>
     )
 }
