@@ -15,13 +15,6 @@ function read(table_id) {
     return knex("tables").select("*").where({table_id}).first()
 }
 
-// async function update(updatedTable) {
-//     return knex("tables")
-//         .select("*")
-//         .where({table_id: updatedTable.table_id})
-//         .update(updatedTable)
-//         .then(updatedRow => updatedRow[0])
-// }
 
 async function update(updatedTable) {
     await knex("tables")

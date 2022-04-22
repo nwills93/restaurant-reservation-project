@@ -61,13 +61,21 @@ function Dashboard() {
         date={date}
         setDate={setDate}
       />
-      <div className="d-flex justify-content-between">
+      <div className="container-fluid d-flex flex-column justify-content-between">
+        <div className="row">
+          <div className="col">
+        <div className="overflow-auto">
         {reservations && (
           <ReservationTableDisplay reservations={reservations} handleCancel={handleCancel}/>
         )}
+        </div>
+        <div className="overflow-auto">
         {tables && (
           <TablesTableDisplay tables={tables}/>
         )}        
+        </div>
+        </div>
+        </div>      
       </div>
     </main>
   );

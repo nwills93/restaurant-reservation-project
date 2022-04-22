@@ -9,7 +9,7 @@ export default function ReservationTableDisplay({ reservations, handleCancel }) 
     
     
     return (
-        <table className="table table-bordered border-dark table-hover mr-2">
+        <table className="table table-bordered border-dark table-hover">
           <thead>
             <tr>
               <th>Name</th>
