@@ -2,12 +2,13 @@ import React, {useState, useEffect} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 import {listTables, readReservation, updateTableStatus} from "../utils/api"
 import ErrorAlert from "./ErrorAlert"
+import SeatForm from "./SeatForm"
 
 export default function SeatReservation() {
 
-    const initialFormState = {
-        table_id: null
-    }
+    // const initialFormState = {
+    //     table_id: null
+    // }
 
     const {reservationId} = useParams()
 
@@ -16,7 +17,8 @@ export default function SeatReservation() {
     const [reservation, setReservation] = useState({})
     const [error, setError] = useState(null)
     const [tables, setTables] = useState([])
-    const [formData, setFormData] = useState({...initialFormState})
+    // const [formData, setFormData] = useState({...initialFormState})
+    const [formData, setFormData] = useState({table_id: null})
 
     useEffect(() => {
         const ac = new AbortController()
@@ -30,15 +32,15 @@ export default function SeatReservation() {
         return () => ac.abort()
     }, [])
 
-    const tableOptions = tables.map(table => (
-        <option value={table.table_id}>{table.table_name} - {table.capacity}</option>
-    ))
+    // const tableOptions = tables.map(table => (
+    //     <option value={table.table_id}>{table.table_name} - {table.capacity}</option>
+    // ))
 
-    const handleChange = ({target}) => {
-        setFormData({
-            [target.name]: target.value
-        })
-    }
+    // const handleChange = ({target}) => {
+    //     setFormData({
+    //         [target.name]: target.value
+    //     })
+    // }
     
     const handleTableSelection = (event) => {
         event.preventDefault()
@@ -52,7 +54,15 @@ export default function SeatReservation() {
             <h1>Seat Reservation</h1>
             <ErrorAlert error={error}/>
             <h2>{reservation.reservation_id} - {reservation.first_name} {reservation.last_name} on {reservation.reservation_date} at {reservation.reservation_time} | Party of {reservation.people}</h2>
-            <form onSubmit={handleTableSelection}>
+            {tables && (
+                <SeatForm 
+                    tables={tables}
+                    onSubmit={handleTableSelection}
+                    onCancel={() => history.goBack()}
+                    setFormData={setFormData}
+                />
+            )}
+            {/* <form onSubmit={handleTableSelection}>
                 <label htmlFor="table_id" className="form-label">
                     Seat At:
                 </label>
@@ -64,7 +74,7 @@ export default function SeatReservation() {
                     <button type="button" className="btn btn-secondary mr-2" onClick={() => history.goBack()}>Cancel</button>
                     <button type="submit" className="btn btn-primary">Submit</button>
                 </div>
-            </form>
+            </form> */}
         </div>
     )
 }
