@@ -1,3 +1,5 @@
+//Validates POST and UPDATE requests to make sure data body has required properties. Throws an error if a required property is missing.
+
 function hasProperties(...properties) {
     return function (req, res, next) {
       const { data = {} } = req.body;

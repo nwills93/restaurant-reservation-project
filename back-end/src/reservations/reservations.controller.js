@@ -16,6 +16,7 @@ const VALID_PROPERTIES = [
   "updated_at"
 ]
 
+//validates that req.body has valid properties only.
  function hasOnlyValidProperties(req, res, next) {
   const { data = {} } = req.body;
 
@@ -32,6 +33,7 @@ const VALID_PROPERTIES = [
   next();
 }
 
+//validates that number of people in a reservation party is a number.
 function isANumber(req, res, next) {
   let {people} = req.body.data
   people = Number(people)
@@ -45,6 +47,7 @@ function isANumber(req, res, next) {
   }
 }
 
+//validates that phone number is in a valid format. I want to add this after project approval.
 // function isValidPhoneNumber(req, res, next) {
 //   const data = req.body.data
 //   const regex = /[0-9]{3}-[0-9]{3}-[0-9]{4}/
@@ -58,6 +61,7 @@ function isANumber(req, res, next) {
 //   }
 // }
 
+//validates that the reservation date is in a valid format.
 function isValidDate(req, res, next) {
   const {reservation_date} = req.body.data
   const validDateRegex = /[0-9]{4}-[0-9]{2}-[0-9]{2}/
@@ -71,6 +75,7 @@ function isValidDate(req, res, next) {
   }
 }
 
+//validates that the date/time combo is not in the past.
 function dateIsNotInPast(req, res, next) {
   const {reservation_date, reservation_time} = req.body.data
   let current = new Date()
@@ -85,6 +90,7 @@ function dateIsNotInPast(req, res, next) {
   }
 }
 
+//validates that the day of the date is not on a Tuesday.
 function isDateTuesday(req, res, next) {
   const {reservation_date} = req.body.data
   let userReservationDate = new Date(reservation_date)
@@ -98,6 +104,7 @@ function isDateTuesday(req, res, next) {
   }
 }
 
+//validates that the time is in a valid format, is not before 10:30 AM, and is not after 9:30 PM.
 function isValidTime(req, res, next) {
   const {reservation_time} = req.body.data
   const validTimeRegex = /[0-2]{1}[0-9]{1}:[0-5]{1}[0-9]{1}/
@@ -122,6 +129,7 @@ function isValidTime(req, res, next) {
   }
 }
 
+//validates that a reservation exists.
 async function reservationExists(req, res, next) {
   const reservationId = Number(req.params.reservation_id)
   const foundReservation = await reservationsService.read(reservationId)
@@ -136,6 +144,8 @@ async function reservationExists(req, res, next) {
   }
 }
 
+//validates status. Frontend does not send status body, so it's assigned value of 'booked'.
+//If sent from anywhere else with a status other than booked, an error is thrown.
 function checkStatus(req, res, next) {
   let {status} = req.body.data
   if(!status) {
@@ -151,6 +161,7 @@ function checkStatus(req, res, next) {
   }
 }
 
+//validates that the reservation being updated isn't already finished.
 function checkIfStatusIsFinished(req, res, next) {
   if(res.locals.reservation.status === 'finished') {
     next({
@@ -162,6 +173,7 @@ function checkIfStatusIsFinished(req, res, next) {
   }
 }
 
+//validates that the values of 'status' may be only one of four values.
 function checkIfStatusIsValidEntry(req, res, next) {
   const {status} = req.body.data
   const validStatus = ['booked', 'seated', 'finished', 'cancelled']
@@ -175,6 +187,8 @@ function checkIfStatusIsValidEntry(req, res, next) {
   }
 }
 
+//gets all reservations from the db. If url query contains date, service request for reservations associated with that date are received.
+//Otherwise, reservations are fetched that match the mobile number query.
 async function list(req, res) {
   if (req.query.date) {
     const data = await reservationsService.listReservationsForCurrentDate(req.query.date)
@@ -185,15 +199,18 @@ async function list(req, res) {
   }
 }
 
+//creates a new reservation. 
 async function create(req, res) {
   const data = await reservationsService.create(req.body.data)
   res.status(201).json({data})
 }
 
+//gets the reservation that matches by id.
 function read(req, res, next) {
   res.json({data: res.locals.reservation})
 }
 
+//updates a reservation's status.
 async function updateReservationStatus(req, res, next) {
   const updatedReservationStatus = {
     ...req.body.data,
@@ -203,6 +220,7 @@ async function updateReservationStatus(req, res, next) {
   res.json({data})
 }
 
+//updates a reservation's information.
 async function update(req, res, next) {
   const updatedReservation = {
     ...req.body.data,
