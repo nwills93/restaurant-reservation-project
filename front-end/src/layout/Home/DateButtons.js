@@ -1,6 +1,7 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 import {today, previous, next} from "../../utils/date-time"
+import "../../font.css"
 
 export default function DateButtons({ date, setDate }) {
     return (
@@ -8,7 +9,7 @@ export default function DateButtons({ date, setDate }) {
         <Link to={`/dashboard?date=${previous(date)}`}>
           <button
             type="button"
-            className="btn btn-primary"
+            className="btn btn-primary mr-2"
             onClick={() => setDate(previous(date))}
           >
             Previous
@@ -17,7 +18,7 @@ export default function DateButtons({ date, setDate }) {
         <Link to={`/dashboard?date=${today()}`}>
           <button
             type="button"
-            className="btn btn-primary"
+            className="btn btn-primary mr-2"
             onClick={() => setDate(today())}
           >
             Today

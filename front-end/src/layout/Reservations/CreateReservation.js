@@ -5,6 +5,7 @@ import {createReservation} from "../../utils/api"
 import ErrorAlert from "../Errors/ErrorAlert"
 import {isDateTuesday, isDateInPast} from "../../utils/validateDate"
 import InvalidDateErrors from "../Errors/InvalidDateErrors"
+import "../../font.css"
 
 export default function CreateReservation() {
     const initialFormState = {
@@ -36,7 +37,7 @@ export default function CreateReservation() {
     }
 
     return (
-        <div>
+        <div className=" text-white fancy-font">
             <h1>New Reservation</h1>
             <ErrorAlert error={reservationsError} />
             <InvalidDateErrors errors={dateErrors}/>

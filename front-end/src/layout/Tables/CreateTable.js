@@ -3,6 +3,7 @@ import {useHistory} from 'react-router-dom'
 import {createTable} from '../../utils/api'
 import ErrorAlert from "../Errors/ErrorAlert"
 import TableFormPage from "../Forms/TableFormPage"
+import "../../font.css"
 
 export default function CreateTable() {
 
@@ -10,7 +11,7 @@ export default function CreateTable() {
 
     const initialFormState = {
         table_name: "",
-        capacity: null
+        capacity: 0
     }
 
     const [formData, setFormData] = useState({...initialFormState})
@@ -22,8 +23,8 @@ export default function CreateTable() {
     }
 
     return (
-        <div>
-            <h1>Create Table</h1>
+        <div className='fancy-font'>
+            <h1 className="text-white">Create Table</h1>
             <ErrorAlert error={tableError} />
             <TableFormPage 
                 onSubmit={handleCreateTableSubmission}

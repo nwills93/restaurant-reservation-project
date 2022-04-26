@@ -1,4 +1,5 @@
 import React from 'react'
+import "../../font.css"
 
 export default function FormPage({onSubmit, onCancel, formData, setFormData, submitLabel}) {
     const handleChange = ({target}) => {
@@ -19,7 +20,7 @@ export default function FormPage({onSubmit, onCancel, formData, setFormData, sub
                     name="first_name"
                     onChange={handleChange}
                     value={formData.first_name}
-                    className="form-control"
+                    className="form-control bg-dark text-white"
                     required
                 />
                 <label htmlFor="last_name" className="form-label">
@@ -31,7 +32,7 @@ export default function FormPage({onSubmit, onCancel, formData, setFormData, sub
                     name="last_name"
                     onChange={handleChange}
                     value={formData.last_name}
-                    className="form-control"
+                    className="form-control bg-dark text-white"
                     required
                 />
                 <label htmlFor="mobile_number" className="form-label">
@@ -45,7 +46,7 @@ export default function FormPage({onSubmit, onCancel, formData, setFormData, sub
                     // pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                     onChange={handleChange}
                     value={formData.mobile_number}
-                    className="form-control"
+                    className="form-control bg-dark text-white"
                     required
                 />
                 <label htmlFor="reservation_date" className="form-label">
@@ -55,7 +56,7 @@ export default function FormPage({onSubmit, onCancel, formData, setFormData, sub
                     id="reservation_date"
                     type="date"
                     name="reservation_date"
-                    className="form-control"
+                    className="form-control bg-dark text-white"
                     onChange={handleChange}
                     value={formData.reservation_date}
                     required
@@ -67,7 +68,7 @@ export default function FormPage({onSubmit, onCancel, formData, setFormData, sub
                     id="reservation_date"
                     type="time"
                     name="reservation_time"
-                    className="form-control"
+                    className="form-control bg-dark text-white"
                     onChange={handleChange}
                     value={formData.reservation_time}
                     required
@@ -79,7 +80,7 @@ export default function FormPage({onSubmit, onCancel, formData, setFormData, sub
                     id="people"
                     type="number"
                     name="people"
-                    className="form-control"
+                    className="form-control bg-dark text-white"
                     onChange={handleChange}
                     value={formData.people}
                     required
@@ -87,7 +88,7 @@ export default function FormPage({onSubmit, onCancel, formData, setFormData, sub
             </div>
             <div className="mt-2">
                 <button type="submit" className="btn btn-primary mr-2">{submitLabel}</button>
-                <button type="button" className="btn btn-secondary" onClick={onCancel}>Cancel</button>
+                <button type="button" className="btn btn-dark" onClick={onCancel}>Cancel</button>
             </div>
         </form>
     )

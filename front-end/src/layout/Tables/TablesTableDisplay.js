@@ -1,14 +1,15 @@
 import React from 'react'
 import TableRow from "./TableRow"
+import "../../font.css"
 
 export default function TablesTableDisplay({tables}) {
 
     const tableRows = tables.map((table) => (
-        <TableRow table={table} />
+        <TableRow table={table} key={table.table_id}/>
       ));
 
     return (
-        <table className="table table-bordered border-dark table-hover">
+        <table className="table table-dark table-borderless table-hover">
           <thead>
             <tr>
               <th>#</th>

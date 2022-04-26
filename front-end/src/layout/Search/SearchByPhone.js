@@ -3,6 +3,7 @@ import {searchReservations, cancelReservation} from '../../utils/api'
 import ErrorAlert from "../Errors/ErrorAlert"
 import ReservationTableDisplay from "../Reservations/ReservationTableDisplay"
 import SearchForm from "../Forms/SearchForm"
+import "../../font.css"
 
 export default function SearchByPhone() {
 
@@ -42,8 +43,8 @@ export default function SearchByPhone() {
     }
 
     return (
-        <div>
-            <h1>Search for Reservation by Phone Number</h1>
+        <div className="fancy-font">
+            <h1 className="text-white fancy-font">Search for Reservation by Phone Number</h1>
             <ErrorAlert error={error}/>
             <SearchForm 
                 onSubmit={handleSearchSubmission}
@@ -51,9 +52,11 @@ export default function SearchByPhone() {
                 setFormData={setFormData}
             />
             {reservations.length >= 1 ? (
-                <ReservationTableDisplay reservations={reservations} handleCancel={handleCancel}/>           
+                <div className="overflow-auto mt-2">
+                <ReservationTableDisplay reservations={reservations} handleCancel={handleCancel}/>
+                </div>           
             ) : (
-                <p>{notFound}</p>
+                <h3 className="mt-2 text-white fancy-font">{notFound}</h3>
             )}
         </div>
     )

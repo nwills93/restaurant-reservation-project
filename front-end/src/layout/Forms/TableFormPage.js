@@ -10,20 +10,20 @@ export default function TableFormPage({onSubmit, onCancel, formData, setFormData
 
     return (
         <form onSubmit={onSubmit}>
-                <label htmlFor="table_name" className="form-label">
+                <label htmlFor="table_name" className="form-label text-white">
                     Table Name
                 </label>
                 <input 
                     id="table_name"
                     type="text"
                     name="table_name"
-                    minlength="2"
+                    minLength="2"
                     onChange={handleChange}
                     value={formData.table_name}
-                    className="form-control"
+                    className="form-control bg-dark text-white"
                     required
                 />
-                <label htmlFor="capacity" className="form-label">
+                <label htmlFor="capacity" className="form-label text-white">
                     Capacity
                 </label>
                 <input 
@@ -33,11 +33,13 @@ export default function TableFormPage({onSubmit, onCancel, formData, setFormData
                     min="1"
                     onChange={handleChange}
                     value={formData.capacity}
-                    className="form-control"
+                    className="form-control bg-dark text-white"
                     required
                 />
-                <button type="submit" className="btn btn-primary">Save</button>
-                <button type="button" className="btn btn-secondary" onClick={onCancel}>Cancel</button>
+                <div className="mt-2">
+                    <button type="submit" className="btn btn-primary mr-2">Save</button>
+                    <button type="button" className="btn btn-dark" onClick={onCancel}>Cancel</button>
+                </div>
             </form>
     )
 }

@@ -11,18 +11,6 @@ import "./Layout.css";
  *
  * @returns {JSX.Element}
  */
-// function Layout() {
-//   return (   
-//       <div className="d-flex">
-//         <div className="side-bar">
-//           <Menu />
-//         </div>
-//         <div>
-//           <Routes />
-//         </div>
-//       </div>
-//   );
-// }
 
 function Layout() {
   return (

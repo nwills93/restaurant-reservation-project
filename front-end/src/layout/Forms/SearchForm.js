@@ -1,4 +1,5 @@
 import React from 'react'
+import "../../font.css"
 
 export default function SearchForm({onSubmit, formData, setFormData}) {
 
@@ -10,9 +11,10 @@ export default function SearchForm({onSubmit, formData, setFormData}) {
 
     return (
         <form onSubmit={onSubmit}>
-                <label htmlFor="mobile_number" className="form-label">
+                <label htmlFor="mobile_number" className="form-label text-white fancy-font">
                     Search Phone Number:
                 </label>
+                <div className="d-flex fancy-font" style={{marginRight: '5em'}}>
                 <input 
                     id="mobile_number"
                     type="search"
@@ -20,9 +22,10 @@ export default function SearchForm({onSubmit, formData, setFormData}) {
                     placeholder="Enter a customer's phone number"
                     onChange={handleChange}
                     value={formData.mobile_number}
-                    className="form-control"
+                    className="form-control bg-dark text-white"
                 />
                 <button type="submit" className="btn btn-primary">Find</button>
+                </div>
             </form>
     )
 }

@@ -10,3 +10,9 @@
     min-height: 100vh;
   }
 }
+
+body {
+  margin: 0;
+  background-image: url("https://cdn.pixabay.com/photo/2012/12/19/18/13/architecture-70920_960_720.jpg");
+  background-size: 100%;
+}

@@ -1,15 +1,16 @@
 import React from 'react'
 import ReservationRow from './ReservationRow'
+import "../../font.css"
 
 export default function ReservationTableDisplay({ reservations, handleCancel }) {
 
     const reservationRows = reservations.map((reservation) => (
-        <ReservationRow reservation={reservation} handleCancel={handleCancel}/>
+        <ReservationRow reservation={reservation} handleCancel={handleCancel} key={reservation.reservation_id}/>
         ));
     
     
     return (
-        <table className="table table-bordered border-dark table-hover">
+        <table className="table table-dark table-borderless table-hover">
           <thead>
             <tr>
               <th>Name</th>

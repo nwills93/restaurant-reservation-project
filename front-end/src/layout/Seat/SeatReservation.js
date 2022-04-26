@@ -35,10 +35,10 @@ export default function SeatReservation() {
     }
 
     return (
-        <div>
-            <h1>Seat Reservation</h1>
+        <div className='fancy-font'>
+            <h1 className="text-white">Seat Reservation</h1>
             <ErrorAlert error={error}/>
-            <h2>{reservation.reservation_id} - {reservation.first_name} {reservation.last_name} on {reservation.reservation_date} at {reservation.reservation_time} | Party of {reservation.people}</h2>
+            <h2 className="text-white">{reservation.reservation_id} - {reservation.first_name} {reservation.last_name} on {reservation.reservation_date} at {reservation.reservation_time} | Party of {reservation.people}</h2>
             {tables && (
                 <SeatForm 
                     tables={tables}

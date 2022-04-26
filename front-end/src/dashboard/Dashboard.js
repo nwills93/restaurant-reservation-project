@@ -6,6 +6,7 @@ import { today } from "../utils/date-time";
 import ReservationTableDisplay from "../layout/Reservations/ReservationTableDisplay"
 import TablesTableDisplay from "../layout/Tables/TablesTableDisplay";
 import DateButtons from "../layout/Home/DateButtons"
+import "../font.css"
 
 /**
  * Defines the dashboard page.
@@ -51,7 +52,7 @@ function Dashboard() {
   }
 
   return (
-    <main>
+    <main className="text-white fancy-font">
       <h1>Dashboard</h1>
       <div className="d-md-flex mb-3">
         <h4 className="mb-0">Reservations for {date}</h4>
@@ -61,15 +62,17 @@ function Dashboard() {
         date={date}
         setDate={setDate}
       />
-      <div className="container-fluid d-flex flex-column justify-content-between">
+      <div className="container-fluid d-flex flex-column justify-content-between mt-2">
         <div className="row">
           <div className="col">
         <div className="overflow-auto">
+          <h4>Reservations</h4>
         {reservations && (
           <ReservationTableDisplay reservations={reservations} handleCancel={handleCancel}/>
         )}
         </div>
         <div className="overflow-auto">
+          <h4>Tables</h4>
         {tables && (
           <TablesTableDisplay tables={tables}/>
         )}        
