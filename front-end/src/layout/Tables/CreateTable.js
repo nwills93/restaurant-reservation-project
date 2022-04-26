@@ -5,6 +5,7 @@ import ErrorAlert from "../Errors/ErrorAlert"
 import TableFormPage from "../Forms/TableFormPage"
 import "../../font.css"
 
+//Create Table handles submission logic for creating a table. Displays all errors(if any) that return from the API.
 export default function CreateTable() {
 
     const history = useHistory()
@@ -18,8 +19,10 @@ export default function CreateTable() {
     const [tableError, setTableError] = useState(null)
 
     const handleCreateTableSubmission = (event) => {
+        const ac = new AbortController()
         event.preventDefault()
-        createTable(formData).then(() => history.push("/dashboard")).catch(setTableError)
+        createTable(formData, ac.signal).then(() => history.push("/dashboard")).catch(setTableError)
+        return () => ac.abort()
     }
 
     return (

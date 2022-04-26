@@ -6,6 +6,11 @@ import ErrorAlert from "../Errors/ErrorAlert"
 import InvalidDateErrors from "../Errors/InvalidDateErrors"
 import ReservationFormPage from "../Forms/ReservationFormPage"
 
+/*
+EditReservation contains logic for how to handle submitting an update reservation.
+Displays any errors that come from API.
+Upon initial render, form is populated with pre-existing information from reservation.
+*/
 export default function EditReservation() {
     const {reservation_id} = useParams()
     const history = useHistory()
@@ -14,6 +19,7 @@ export default function EditReservation() {
     const [dateErrors, setDateErrors] = useState(null)
     const [formData, setFormData] = useState({})
 
+    //Loads data from reservation.
     useEffect(() => {
         const ac = new AbortController()
         readReservation(reservation_id, ac.signal)
@@ -22,6 +28,7 @@ export default function EditReservation() {
         return () => ac.abort()
     }, [reservation_id])
 
+    //sets formdata to information from reservation after it has been loaded. Then it's passed to formpage as a prop.
     useEffect(() => {
         const initialFormState = {
             first_name: reservation.first_name,
@@ -37,8 +44,14 @@ export default function EditReservation() {
     const handleUpdateReservationSubmission = (event) => {
         event.preventDefault()
         setError(null)
+
+        //checks to see if date selected is on a Tuesday.
         const tuesday = isDateTuesday(formData.reservation_date)
+
+        //checks to see if date and time are in the past.
         const past = isDateInPast(formData)
+
+        //if either of the above variables have a truthy value, date errors will be set and display associated error message.
         if (tuesday || past) {
             setDateErrors([tuesday ? tuesday : null, past ? past : null])
             return

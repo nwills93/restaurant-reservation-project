@@ -1,6 +1,7 @@
 import React from "react";
 import {Link} from 'react-router-dom'
 
+//displays all information regarding a reservation as a table row.
 export default function ReservationRow({ reservation, handleCancel }) {
   
     return (

@@ -1,5 +1,6 @@
 import React from 'react'
 
+//Form page for creating a new table.
 export default function TableFormPage({onSubmit, onCancel, formData, setFormData}) {
     const handleChange = ({target}) => {
         setFormData({

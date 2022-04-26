@@ -1,7 +1,9 @@
 import React from 'react'
 
+//Form page for seating a reservation.
 export default function SeatForm({ tables, onSubmit, onCancel, setFormData }) {
 
+    //Maps through all tables, and adds them to the form as select options.
     const tableOptions = tables.map(table => (
         <option key={table.table_id} value={table.table_id}>{table.table_name} - {table.capacity}</option>
     ))

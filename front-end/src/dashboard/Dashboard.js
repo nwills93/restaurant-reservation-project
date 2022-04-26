@@ -24,6 +24,7 @@ function Dashboard() {
 
   useEffect(loadDashboard, [date]);
 
+  //Pulls date query from url and sets the date. Dashboard is updated anytime the date changes.
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const singleValue = queryParams.get("date");
@@ -32,7 +33,7 @@ function Dashboard() {
     }
   }, [location.search]);
 
-
+  //Lists all reservations for a certain date. Lists all tables that have been created.
   function loadDashboard() {
     const abortController = new AbortController();
     setReservationsError(null);
@@ -45,6 +46,10 @@ function Dashboard() {
     return () => abortController.abort();
   }
 
+  /*
+  Modal dialogue asks if user wants to continue with reservation cancellation request. 
+  If confirmed, page is refreshed and reservation is moved from page
+  */
   const handleCancel = (id) => {
     if (window.confirm("Do you want to cancel this reservation? This cannot be undone.")) {
       cancelReservation(id).then(() => history.go(0)).catch(setReservationsError)

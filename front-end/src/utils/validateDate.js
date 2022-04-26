@@ -1,4 +1,4 @@
-//TODO: need to add a frontend error if time is too early or too late
+//Returns an error message if Date is on a Tuesday. Returns undefined otherwise.
 export function isDateTuesday(date) {
     const userReservationDate = new Date(date)
     if (userReservationDate.getUTCDay() === 2) {
@@ -8,6 +8,7 @@ export function isDateTuesday(date) {
     }
 }
 
+//Returns an error message if date/time combo is in the past. Returns undefined otherwise.
 export function isDateInPast(reservation) {
     const userReservationDate = new Date(`${reservation.reservation_date} ${reservation.reservation_time}`)
     if(new Date() > userReservationDate) {

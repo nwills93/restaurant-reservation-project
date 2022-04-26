@@ -4,6 +4,7 @@ import {listTables, readReservation, updateTableStatus} from "../../utils/api"
 import ErrorAlert from "../Errors/ErrorAlert"
 import SeatForm from "../Forms/SeatForm"
 
+//Seats a reservation. Updates reservation status to 'seated' and table status to 'occupied'.
 export default function SeatReservation() {
 
     const {reservationId} = useParams()
@@ -15,18 +16,21 @@ export default function SeatReservation() {
     const [tables, setTables] = useState([])
     const [formData, setFormData] = useState({table_id: null})
 
+    //Loads reservation.
     useEffect(() => {
         const ac = new AbortController()
         readReservation(reservationId, ac.signal).then(setReservation).catch(setError)
         return () => ac.abort()
     }, [reservationId])
 
+    //Loads all tables.
     useEffect(() => {
         const ac = new AbortController()
         listTables(ac.signal).then(setTables).catch(setError)
         return () => ac.abort()
     }, [])
     
+    //Submission handler for seat form submission. Updates reservation and table status and then navigates to the dashboard.
     const handleTableSelection = (event) => {
         event.preventDefault()
         const ac = new AbortController()

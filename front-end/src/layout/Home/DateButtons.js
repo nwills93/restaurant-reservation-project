@@ -3,6 +3,11 @@ import {Link} from 'react-router-dom'
 import {today, previous, next} from "../../utils/date-time"
 import "../../font.css"
 
+/*
+Buttons for displaying the current day, 
+the previous day from whatever the 'date' state is set to in the DashBoard, 
+or the next day from whatever the 'date' state is set to in the Dashboard.
+*/
 export default function DateButtons({ date, setDate }) {
     return (
         <div className="btn-group" role="group">

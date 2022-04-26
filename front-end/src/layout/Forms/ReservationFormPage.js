@@ -1,6 +1,7 @@
 import React from 'react'
 import "../../font.css"
 
+//Generic form page for creating a new reservation. Shared by 'CreateReservation' and 'EditReservation' components.
 export default function FormPage({onSubmit, onCancel, formData, setFormData, submitLabel}) {
     const handleChange = ({target}) => {
         setFormData({

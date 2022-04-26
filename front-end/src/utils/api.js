@@ -69,6 +69,7 @@ export async function listReservations(params, signal) {
     .then(formatReservationTime);
 }
 
+//Retrieves all reservations (if any) that meet search criteria.
 export async function searchReservations(params, signal) {
   const url = new URL(`${API_BASE_URL}/reservations`)
   Object.entries(params).forEach(([key, value]) => 
@@ -79,6 +80,7 @@ export async function searchReservations(params, signal) {
     .then(formatReservationTime)
 }
 
+//Creates a new reservation.
 export async function createReservation(reservation, signal) {
   const url = `${API_BASE_URL}/reservations`;
   const options = {
@@ -90,6 +92,7 @@ export async function createReservation(reservation, signal) {
   return await fetchJson(url, options, reservation);
 }
 
+//Retrieves all tables.
 export async function listTables(signal) {
   const url = `${API_BASE_URL}/tables`
   const options = {
@@ -100,6 +103,7 @@ export async function listTables(signal) {
   return await fetchJson(url, options, [])
 }
 
+//Creates a new table.
 export async function createTable(table, signal) {
   const url = `${API_BASE_URL}/tables`
   const options = {
@@ -111,6 +115,7 @@ export async function createTable(table, signal) {
   return await fetchJson(url, options, table)
 }
 
+//Retrieves information for a certain reservation.
 export async function readReservation(reservationId, signal) {
   const url = `${API_BASE_URL}/reservations/${reservationId}`
   const options = {
@@ -120,6 +125,7 @@ export async function readReservation(reservationId, signal) {
   return await fetchJson(url, options, {})
 }
 
+//Updates pre-existing reservation with new information.
 export async function updateReservation(reservation, id, signal) {
   const url = `${API_BASE_URL}/reservations/${id}`
   const options = {
@@ -131,6 +137,7 @@ export async function updateReservation(reservation, id, signal) {
   return await fetchJson(url, options, reservation)
 }
 
+//Updates reservation status to 'cancelled'.
 export async function cancelReservation(reservationId, signal) {
   const url = `${API_BASE_URL}/reservations/${reservationId}/status`;
   const options = {
@@ -142,6 +149,7 @@ export async function cancelReservation(reservationId, signal) {
   return await fetchJson(url, options, {});
 }
 
+//Updates Table to be associated with a reservation id so the table is 'occupied'.
 export async function updateTableStatus(tableId, reservationId, signal) {
   const url = `${API_BASE_URL}/tables/${tableId}/seat`
   const options = {
@@ -153,6 +161,7 @@ export async function updateTableStatus(tableId, reservationId, signal) {
   return await fetchJson(url, options, {})
 }
 
+//Removes associated reservation id from the table so that the table is 'free'. This will also set the reservation status to 'finished.'
 export async function deleteTableAssignment(tableId, signal) {
   const url = `${API_BASE_URL}/tables/${tableId}/seat`
   const options = {

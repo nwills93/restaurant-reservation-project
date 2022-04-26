@@ -1,6 +1,7 @@
 import React from 'react'
 import "../../font.css"
 
+//Form Page for searching reservations based off input (digits in a telephone #)
 export default function SearchForm({onSubmit, formData, setFormData}) {
 
     const handleChange = ({target}) => {
