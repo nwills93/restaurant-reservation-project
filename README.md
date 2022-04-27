@@ -5,5 +5,6 @@ Full Stack Application built using Javascript, React.js, Node.js, Express.js and
 ## Installation
 
 1. Fork and clone this repository.
-1. Run `npm install` to install project dependencies.
-1. Run `npm run start:dev` to start your server in development mode.
+2. Update the .env file in the back-end folder tp point toward your database instance url.
+3. Run `npm install` to install project dependencies.
+4. Run `npm run start:dev` to start your server in development mode.
