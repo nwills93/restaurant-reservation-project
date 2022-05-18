@@ -1,5 +1,3 @@
-# Capstone: Restaurant Reservation System Frontend
+# Restaurant Reservation System: Frontend
 
-This starter code for the backend of the capstone project in the Thinkful curriculum.
-
-See [../README.md](../README.md) for detailed instructions.
+These folders contain all of the frontend code for my restaurant reservation system application. Built using React and React-Router.
