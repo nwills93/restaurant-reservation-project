@@ -1,5 +1,3 @@
-# Capstone: Restaurant Reservation System Backend
+# Restaurant Reservation System: Backend
 
-This starter code for the backend of the capstone project in the Thinkful curriculum.
-
-See [../README.md](../README.md) for detailed instructions.
+These folders contain the code for the backend of my restaurant reservation system application. Built using Node.js, Express.js, Knex.js, and PostgreSQL.
